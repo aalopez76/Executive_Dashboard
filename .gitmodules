@@ -1,0 +1,6 @@
+[submodule "SQL-Connection-Module"]
+	path = SQL-Connection-Module
+	url = https://github.com/aalopez76/SQL-Connection-Module
+[submodule "SQL-Queries"]
+	path = SQL-Queries
+	url = https://github.com/aalopez76/SQL-Queries
