@@ -1,0 +1,166 @@
+/* assets/custom.css */
+
+/* Header more compact / aligned */
+#header { padding-left: 0; }
+
+/* Global spacing improvements */
+.page-container,
+.vizro-container { gap: 12px; }
+
+/* KPI cards (demo-like) */
+.card-kpi{
+  min-width:200px;height:110px;padding:.5rem;border-radius:12px;
+  border-left:4px solid rgba(26,133,255,.9);
+}
+.card-kpi .card-title{font-weight:600;letter-spacing:.2px;}
+.card-kpi .card-text{font-size:.9rem;font-weight:700;}
+.card-kpi .card-footer{font-size:.82rem;opacity:.9;}
+.card-kpi:has(.color-neg){border-left:4px solid rgba(244,63,94,.9);}
+
+/* Anchor (bottom-right) */
+.anchor-container{
+  align-items:center;background:rgba(255,255,255,.10);
+  border-top-left-radius:10px;bottom:0;right:0;position:fixed;
+  color:rgba(255,255,255,.85)!important;display:flex;
+  font-size:.78rem;font-weight:600;height:26px;padding:0 12px;
+  backdrop-filter:blur(6px);
+}
+.anchor-container:focus,
+.anchor-container:hover{
+  background:rgba(255,255,255,.16);
+  color:rgba(255,255,255,.95)!important;
+}
+img#banner{height:15px;margin:0 6px;}
+
+/* Tabs/Buttons styling for RadioItems (demo-like) */
+.vizro-container .dash-radio-items,
+.vizro-container [role="radiogroup"]{
+  display:flex!important;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.vizro-container .dash-radio-items label,
+.vizro-container [role="radiogroup"] label{
+  display:inline-flex!important;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:10px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  cursor:pointer;user-select:none;font-size:.82rem;font-weight:600;
+}
+.vizro-container .dash-radio-items input[type="radio"],
+.vizro-container [role="radiogroup"] input[type="radio"]{display:none!important;}
+.vizro-container .dash-radio-items label:has(input[type="radio"]:checked),
+.vizro-container [role="radiogroup"] label:has(input[type="radio"]:checked){
+  background:rgba(26,133,255,.22);
+  border-color:rgba(26,133,255,.50);
+}
+
+/* Optional: Reduce control panel padding a bit */
+.vz-controls{padding-top:6px;}
+
+/* Compact footer cards (Risks page) */
+.card-footer-compact,
+.card-footer-compact .card-body{padding:.35rem .6rem!important;}
+.card-footer-compact{min-height:54px;border-radius:10px;}
+.card-footer-compact p,
+.card-footer-compact span{font-size:.85rem;line-height:1.1rem;}
+
+/* Table title "legend" */
+.table-title{font-weight:650;font-size:.95rem;opacity:.92;margin:0 0 6px 0;}
+
+/* =========================
+   AG GRID: cell highlights
+   ========================= */
+
+/* ABC Classification - Mayor especificidad */
+.ag-theme-alpine-dark .ag-cell.cell-abc-a,
+.ag-theme-alpine .ag-cell.cell-abc-a,
+div[class*="ag-theme"] .ag-cell.cell-abc-a {
+  background: rgba(26,133,255,.28) !important;
+  font-weight: 700 !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+
+.ag-theme-alpine-dark .ag-cell.cell-abc-b,
+.ag-theme-alpine .ag-cell.cell-abc-b,
+div[class*="ag-theme"] .ag-cell.cell-abc-b {
+  background: rgba(255,255,255,.12) !important;
+  font-weight: 700 !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+
+.ag-theme-alpine-dark .ag-cell.cell-abc-c,
+.ag-theme-alpine .ag-cell.cell-abc-c,
+div[class*="ag-theme"] .ag-cell.cell-abc-c {
+  background: rgba(217,17,89,.28) !important;
+  font-weight: 700 !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+
+/* Next Order Status - Mayor especificidad */
+.ag-theme-alpine-dark .ag-cell.cell-status-overdue,
+.ag-theme-alpine .ag-cell.cell-status-overdue,
+div[class*="ag-theme"] .ag-cell.cell-status-overdue {
+  background: rgba(217,17,89,.32) !important;
+  font-weight: 700 !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+
+.ag-theme-alpine-dark .ag-cell.cell-status-duesoon,
+.ag-theme-alpine .ag-cell.cell-status-duesoon,
+div[class*="ag-theme"] .ag-cell.cell-status-duesoon {
+  background: rgba(255,193,7,.24) !important;
+  font-weight: 700 !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+
+.ag-theme-alpine-dark .ag-cell.cell-status-ontrack,
+.ag-theme-alpine .ag-cell.cell-status-ontrack,
+div[class*="ag-theme"] .ag-cell.cell-status-ontrack {
+  background: rgba(76,175,80,.20) !important;
+  font-weight: 700 !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+
+/* Lift (Cross Sell) - Mayor especificidad */
+.ag-theme-alpine-dark .ag-cell.cell-lift-hi,
+.ag-theme-alpine .ag-cell.cell-lift-hi,
+div[class*="ag-theme"] .ag-cell.cell-lift-hi {
+  background: rgba(26,133,255,.35) !important;
+  font-weight: 700 !important;
+  color: rgba(255,255,255,0.95) !important;
+  border-left: 3px solid rgba(26,133,255,.8) !important;
+}
+
+.ag-theme-alpine-dark .ag-cell.cell-lift-mid,
+.ag-theme-alpine .ag-cell.cell-lift-mid,
+div[class*="ag-theme"] .ag-cell.cell-lift-mid {
+  background: rgba(255,255,255,.12) !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.90) !important;
+}
+
+.ag-theme-alpine-dark .ag-cell.cell-lift-lo,
+.ag-theme-alpine .ag-cell.cell-lift-lo,
+div[class*="ag-theme"] .ag-cell.cell-lift-lo {
+  background: rgba(217,17,89,.22) !important;
+  font-weight: 600 !important;
+  color: rgba(255,255,255,0.85) !important;
+}
+
+/* Hover states para celdas coloreadas */
+.ag-theme-alpine-dark .ag-cell.cell-lift-hi:hover,
+.ag-theme-alpine .ag-cell.cell-lift-hi:hover,
+div[class*="ag-theme"] .ag-cell.cell-lift-hi:hover {
+  background: rgba(26,133,255,.45) !important;
+}
+
+.ag-theme-alpine-dark .ag-cell.cell-lift-mid:hover,
+.ag-theme-alpine .ag-cell.cell-lift-mid:hover,
+div[class*="ag-theme"] .ag-cell.cell-lift-mid:hover {
+  background: rgba(255,255,255,.18) !important;
+}
+
+.ag-theme-alpine-dark .ag-cell.cell-lift-lo:hover,
+.ag-theme-alpine .ag-cell.cell-lift-lo:hover,
+div[class*="ag-theme"] .ag-cell.cell-lift-lo:hover {
+  background: rgba(217,17,89,.30) !important;
+}
