@@ -235,7 +235,18 @@ def build_page_risks(d: dict) -> vm.Page:
 
 def build_page_opportunities(d: dict) -> vm.Page:
     df_products = d["products"]
-    df_customer_rfm = d["customer_rfm"]
+    df_customer_rfm = d["customer_rfm"].copy()
+
+    # Crear rfm_segment si el SQL no lo trae
+    if "rfm_segment" not in df_customer_rfm.columns:
+        if "rfm_score" in df_customer_rfm.columns:
+            df_customer_rfm["rfm_segment"] = pd.cut(
+                df_customer_rfm["rfm_score"],
+                bins=[-float("inf"), 6, 9, 12, float("inf")],
+                labels=["Low", "Mid", "High", "Top"],
+            ).astype(str)
+        else:
+            df_customer_rfm["rfm_segment"] = "Unknown"
 
     rfm_counts = df_customer_rfm[["rfm_segment"]].copy()
     rfm_counts["n"] = 1
@@ -254,6 +265,8 @@ def build_page_opportunities(d: dict) -> vm.Page:
             ),
         ],
     )
+
+
 
 
 def build_page_deep_dive(d: dict) -> vm.Page:
