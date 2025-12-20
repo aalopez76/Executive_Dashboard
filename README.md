@@ -1,7 +1,7 @@
 # Classic Models Sales - KPI Report
 
 
-![Dashboard Preview](assets/images/kpi-dashboard.gif)
+![Dashboard Preview](assets/images/kpi-dashboard.png)
 
 ## Project Background
 
@@ -11,13 +11,13 @@ The analysis leverages a **multi-layer SQL analytics framework** (descriptive, a
 
 ---
 
-## 🎯 Executive Summary
+## Executive Summary
 
 This dashboard provides comprehensive insights across five key areas: executive KPIs, regional performance, risk diagnostics, growth opportunities, and deep-dive analytics. The analysis reveals **significant revenue concentration** among top customers and products, **geographic imbalances** in sales distribution, and **predictable demand patterns** ideal for forecasting. Key findings include a **14% on-time delivery rate improvement** year-over-year, **credit misalignment risks** affecting $250K+ in revenue, and **cross-sell opportunities** with lift metrics exceeding 10x for strategic product pairs.
 
 ---
 
-## 📊 Insights Deep-Dive
+## Insights Deep-Dive
 
 ### **Customer & Geographic Performance**
 - **122 active customers** distributed across 27 countries, with significant concentration in Western Europe and North America.
@@ -59,7 +59,7 @@ This dashboard provides comprehensive insights across five key areas: executive 
 
 ---
 
-## 💡 Recommendations
+## Recommendations
 
 Based on the findings, I recommend the following actions:
 
@@ -81,7 +81,7 @@ Based on the findings, I recommend the following actions:
 
 ---
 
-## 🔧 Technical Implementation
+## Technical Implementation
 
 ### **Technology Stack**
 - **Framework**: Vizro 0.1.44 (Dash-based) for interactive dashboards
@@ -126,7 +126,7 @@ This project uses 2 external repositories:
 
 ---
 
-## 🚀 Installation & Usage
+## Installation & Usage
 
 ### **Quick Start**
 
