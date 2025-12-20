@@ -1,4 +1,4 @@
-# Executive Dashboard - Classic Models Sales Analytics
+# Classic Models Sales - KPI Report
 
 
 ![Dashboard Preview](assets/images/kpi-dashboard.gif)
