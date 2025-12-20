@@ -1,6 +1,6 @@
 # Executive Dashboard - Classic Models Sales Analytics
 
-![Dashboard Preview](assets/images/dashboard_preview.png)
+<img src="./images/kpi-dashboard.gif" alt="Gif to KPI dashboard" width="600">
 
 ## Project Background
 
