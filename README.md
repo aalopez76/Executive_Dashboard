@@ -1,7 +1,8 @@
 # Classic Models Sales - KPI Report
 
 
-![Dashboard Preview](assets/images/kpi-dashboard.png)
+<img src="assets/images/kpi-dashboard.png" alt="Dashboard Preview" width="700">
+
 
 ## Project Background
 
