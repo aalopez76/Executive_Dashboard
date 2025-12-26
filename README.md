@@ -11,7 +11,8 @@
 
 As a professional Data Scientist, the development of an executive dashboard provides the strategic bridge between raw data processing and high-level decision-making. For Toys & Models Co., I developed an enterprise-grade interactive dashboard to provide actionable insights into sales performance, customer behavior, and operational risks. **This dashboard analyzes 326 orders spanning multiple years across North America, Europe, and APAC, covering 122 customers, 110 products, and 23 sales representatives**. The goal was to transform raw transactional data into strategic insights that drive decision-making for executives, sales managers, and business stakeholders.
 
-````
+````Markdown
+```
 Raw Tables (SQLite)          SQL Analytics Layer              Dashboard Layer
 ─────────────────            ───────────────────              ───────────────
 ┌─────────────┐              ┌──────────────┐               ┌──────────────┐
@@ -28,6 +29,7 @@ Raw Tables (SQLite)          SQL Analytics Layer              Dashboard Layer
                              │ (What next?) │──┘            ├──────────────┤
                              └──────────────┘               │ Deep Dive    │
                                                             └──────────────┘
+```
 ````
 
 
