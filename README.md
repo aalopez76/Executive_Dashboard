@@ -18,9 +18,9 @@ Raw Tables (SQLite)          SQL Analytics Layer              Dashboard Layer
 ┌─────────────┐              ┌──────────────┐               ┌──────────────┐
 │ customers   │──┐           │ Descriptive  │──┐            │ Executive    │
 │ orders      │  │           │ (What?)      │  │            │ View         │
-│ orderdetails│  ├─────────▶│              │  │             ├──────────────┤
+│ orderdetails│  ├─────────▶│              │  │            ├──────────────┤
 │ products    │  │           │ Analytical   │  │            │ Regional     │
-│ employees   │  │           │ (Why?)       │  ├───────────▶│ View        │
+│ employees   │  │           │ (Why?)       │  ├──────────▶│ View         │
 │ payments    │  │           │              │  │            ├──────────────┤
 │ offices     │  │           │ Diagnostic   │  │            │ Risks &      │
 │ productlines│──┘           │ (What wrong?)│  │            │ Diagnostics  │
