@@ -32,6 +32,21 @@ Raw Tables (SQLite)          SQL Analytics Layer              Dashboard Layer
 ```
 ````
 
+<pre><code>
+Raw Tables (SQLite)        SQL Analytics Layer           Dashboard Layer
+____________________       ______________________        ______________________
+
+| customers          |      | Descriptive (What?) |       | Executive View     |
+| orders             | ---> | Analytical (Why?)   | --->  | Regional View      |
+| orderdetails       |      | Diagnostic (What?)  |       | Risks & Diagnostics|
+| products           |      | Predictive (Next?)  |       | Opportunities      |
+| employees          |      |                     |       | Deep Dive          |
+| payments           |      |                     |       |                   |
+| offices            |      |                     |       |                   |
+| productlines       |      |                     |       |                   |
+</code></pre>
+
+
 
 
 The analysis leverages a **multi-layer SQL analytics framework** (descriptive, analytical, diagnostic, and predictive) combined with **Vizro's modern visualization capabilities** to deliver real-time KPIs, risk detection, and growth opportunities.
