@@ -51,6 +51,9 @@ This dashboard provides comprehensive insights across five key areas: executive 
 
 ## Insights Deep-Dive
 
+[![Hugging Face Space](https://img.shields.io/badge/HuggingFace-Live%20Dashboard-yellow?logo=huggingface)](https://huggingface.co/spaces/aalpzp/Executive_KPI_Dashboard)
+
+
 ### **Customer & Geographic Performance**
 - **122 active customers** distributed across 27 countries, with significant concentration in Western Europe and North America.
 - **Top 20% of customers generate 70%+ of revenue**, following classic Pareto distribution (ABC segmentation).
