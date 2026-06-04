@@ -142,3 +142,11 @@ cython_debug/
 
 # Ruff
 .ruff_cache/
+
+# Proyecto
+# bundle de despliegue Hugging Face (repo git propio)
+Executive-kpi-dashboard/
+# overrides locales de Claude Code (no compartir)
+.claude/settings.local.json
+# informe generado por /data_validation
+docs/data_report.md
