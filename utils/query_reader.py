@@ -7,9 +7,9 @@ logger = logging.getLogger(__name__)
 # .../Executive_Dashboard/utils/query_reader.py -> .../Executive_Dashboard
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# TU estructura real (confirmada por captura):
-# Executive_Dashboard/SQL-Queries/queries/<area>/.sql/<file>
-QUERIES_DIR = os.path.join(BASE_DIR, "SQL-Queries", "queries")
+# QUERIES_DIR configurable por env var (p.ej. /app/queries en HF Spaces);
+# por defecto, las queries versionadas del submódulo SQL-Queries.
+QUERIES_DIR = os.getenv("QUERIES_DIR") or os.path.join(BASE_DIR, "SQL-Queries", "queries")
 
 
 def load_sql_query(relative_path: str) -> str:
