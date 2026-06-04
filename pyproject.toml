@@ -1,0 +1,36 @@
+# pyproject.toml — configuración de herramientas (NO empaqueta el proyecto, que usa pip + requirements).
+# Stack BI: Vizro/Dash + pandas + SQLite. Python 3.11.
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = [
+    ".venv",
+    "SQL-Connection-Module",
+    "SQL-Queries",
+    "Executive-kpi-dashboard",
+]
+
+[tool.ruff.lint]
+# Conjunto conservador: errores, pyflakes, imports ordenados, warnings.
+select = ["E", "F", "I", "W"]
+# E501 (longitud de línea) se delega a black; no se fuerza sobre el código heredado.
+ignore = ["E501"]
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+extend-exclude = '''
+/(
+    \.venv
+  | SQL-Connection-Module
+  | SQL-Queries
+  | Executive-kpi-dashboard
+)/
+'''
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["."]
+filterwarnings = ["ignore::DeprecationWarning"]
