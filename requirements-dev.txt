@@ -1,0 +1,8 @@
+# Dependencias de DESARROLLO (no necesarias en runtime/producción).
+# Instalar tras requirements.txt:  pip install -r requirements-dev.txt
+# Usadas por el Makefile, los tests y CI.
+
+pytest==9.0.3      # suite de tests (tests/)
+ruff==0.15.15      # lint + orden de imports
+black==24.10.0     # formateo (opt-in; ver pyproject.toml)
+pyyaml==6.0.2      # leer configs/thresholds.yaml en tests

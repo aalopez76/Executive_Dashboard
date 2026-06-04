@@ -1,20 +1,21 @@
 # app.py
-import os
 import logging
-from dash import html, get_asset_url
-import dash_bootstrap_components as dbc
+import os
 
+import dash_bootstrap_components as dbc
 import vizro.models as vm
+from dash import get_asset_url, html
 from vizro import Vizro
 
 from utils.data import load_datasets  # espera db_path
 from utils.pages import (
-    build_page_exec,
-    build_page_risks,
-    build_page_opportunities,
     build_page_deep_dive,
+    build_page_exec,
+    build_page_opportunities,
     build_page_regional,
+    build_page_risks,
 )
+
 
 # -----------------------------------------------------------------------------
 # Logging
@@ -35,24 +36,23 @@ def get_db_path() -> str:
     Resuelve el path de la DB.
     Prioridad:
       1) env var DB_PATH
-      2) path relativo al repo (tu estructura actual)
+      2) copia interna del submódulo (SQL-Connection-Module/examples/, versionada en el repo)
+      3) copia externa (un nivel por encima del repo) — legado, por compatibilidad
     """
     env_path = os.getenv("DB_PATH")
     if env_path:
         return env_path
 
-    # Ajustado a tu estructura:
-    # KPI-Dashboard/app.py
-    # ../SQL-Connection-Module/examples/toys_and_models.sqlite
-    return os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "SQL-Connection-Module",
-            "examples",
-            "toys_and_models.sqlite",
-        )
-    )
+    here = os.path.dirname(__file__)
+    rel = ("SQL-Connection-Module", "examples", "toys_and_models.sqlite")
+    candidates = [
+        os.path.abspath(os.path.join(here, *rel)),  # interna (preferida)
+        os.path.abspath(os.path.join(here, "..", *rel)),  # externa (legado)
+    ]
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return candidate
+    return candidates[0]
 
 
 # -----------------------------------------------------------------------------
@@ -111,11 +111,13 @@ def create_app():
 
 
 # -----------------------------------------------------------------------------
-# Entrypoint
+# Exposición a nivel de módulo para servidores WSGI (gunicorn app:app).
+# Se construye una sola vez al importar; el bloque __main__ reutiliza la instancia.
 # -----------------------------------------------------------------------------
+app = create_app()
+server = app.dash.server
+
+
 if __name__ == "__main__":
-    app = create_app()
-    debug = True
-    use_reloader = False
-    app.run(debug=debug, use_reloader=use_reloader)
+    app.run(debug=True, use_reloader=False)
 
