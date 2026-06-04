@@ -31,6 +31,7 @@ extend-exclude = '''
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+addopts = "-q -m 'not e2e'"
 pythonpath = ["."]
 filterwarnings = ["ignore::DeprecationWarning"]
+markers = ["e2e: tests end-to-end con navegador (Playwright); excluidos por defecto"]

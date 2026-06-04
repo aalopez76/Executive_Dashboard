@@ -33,8 +33,15 @@ def thresholds():
 
 
 @pytest.fixture(autouse=True)
-def _isolate_vizro_models():
-    """Limpia el model_manager global de Vizro alrededor de cada test (evita IDs duplicados)."""
+def _isolate_vizro_models(request):
+    """Limpia el model_manager global de Vizro alrededor de cada test (evita IDs duplicados).
+
+    Se omite en tests e2e: el servidor en vivo necesita el model_manager poblado para
+    renderizar las páginas durante las peticiones del navegador.
+    """
+    if request.node.get_closest_marker("e2e"):
+        yield
+        return
     try:
         from vizro.managers import model_manager
 

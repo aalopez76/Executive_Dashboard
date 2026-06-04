@@ -7,3 +7,5 @@ ruff==0.15.15      # lint + orden de imports
 black==24.10.0     # formateo (opt-in; ver pyproject.toml)
 pyyaml==6.0.2      # leer configs/thresholds.yaml en tests
 pre-commit==4.0.1  # hooks de git (ver .pre-commit-config.yaml)
+playwright==1.60.0        # tests e2e (pytest -m e2e)
+pytest-playwright==0.8.0  # fixtures de Playwright para pytest
