@@ -79,7 +79,7 @@ def create_app():
 
     dashboard = vm.Dashboard(
         pages=pages,
-        title="Classic Models Sales Analytics Dashboard",
+        title="Classic Models Sales - KPI Report",
         navigation=vm.Navigation(
             nav_selector=vm.NavBar(
                 items=[

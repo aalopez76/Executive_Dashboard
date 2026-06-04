@@ -1,9 +1,13 @@
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y git build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
-RUN uv pip sync --system requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
 
-ENTRYPOINT ["gunicorn", "app:app", "--workers", "4", "--bind", "0.0.0.0:7860"]
+CMD ["bash", "-lc", "uvicorn app:app --host 0.0.0.0 --port $PORT"]

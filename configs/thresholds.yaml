@@ -1,0 +1,28 @@
+# configs/thresholds.yaml
+# Umbrales mínimos para el dictamen de /dashboard_review.
+# Adaptado a un proyecto BI (Vizro/Dash + pandas + SQLite). NO hay modelos ML.
+
+data_quality:
+  max_null_pct: 5.0            # % máximo de nulos por columna crítica
+  max_invalid_date_pct: 2.0    # % máx. de filas con fechas inválidas (orderDate/shippedDate/requiredDate)
+  min_payment_coverage_pct: 80.0  # cobertura mínima pagos/ventas (%)
+  max_duplicate_pct: 0.0       # duplicados de clave primaria tolerados (%)
+
+datasets:                      # filas mínimas esperadas (sanity check de carga)
+  base_min_rows: 1000
+  monthly_min_rows: 12
+  customers_min_rows: 50
+
+dashboard:
+  must_build: true             # app.create_app() debe completar sin excepción
+  required_pages:              # páginas que deben construirse sin error
+    - "Executive View"
+    - "Risks & Diagnostics"
+    - "Opportunities"
+    - "Deep Dive"
+
+# --- Marcador para cuando el proyecto incorpore ML de verdad (HOY NO APLICA) ---
+# model:
+#   min_accuracy: 0.80
+#   min_f1: 0.75
+#   max_rmse: 1000.0

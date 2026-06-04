@@ -456,12 +456,12 @@ def build_page_deep_dive(d: dict) -> vm.Page:
         else:
             return f"🔴 {lift:.2f}"
     
-    df_cross["lift_formatted"] = df_cross["lift"].apply(format_lift_visual)
+    df_cross["lift"] = df_cross["lift"].apply(format_lift_visual)
     
     cross_cols = [
         "productName_1", "productName_2",
         "cooccurrence_count", "support", "confidence_from_p1", 
-        "lift_formatted"
+        "lift"
     ]
     cross_cols = [c for c in cross_cols if c in df_cross.columns]
     df_cross_v = df_cross[cross_cols].copy()
@@ -485,7 +485,7 @@ def build_page_deep_dive(d: dict) -> vm.Page:
             "valueFormatter": {"function": "d3.format(',.3f')(params.value)"},
         },
         {
-            "field": "lift_formatted",
+            "field": "lift",
             "headerName": "Lift",
             "width": 130,
             "cellDataType": "text",
