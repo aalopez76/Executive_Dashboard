@@ -1,11 +1,11 @@
 # utils/pages.py
 import pandas as pd
-import vizro.models as vm
 import vizro.actions as va
-from vizro.tables import dash_ag_grid
+import vizro.models as vm
 from vizro.figures import kpi_card_reference
+from vizro.tables import dash_ag_grid
 
-from utils._charts import bar, pie, choropleth
+from utils._charts import bar, choropleth, pie
 
 
 # ---------------------------------------------------------------------
@@ -414,7 +414,7 @@ def build_page_deep_dive(d: dict) -> vm.Page:
     ]
     if "next_order_status" in df_next.columns:
         next_cols.append("next_order_status")
-    
+
     next_cols = [c for c in next_cols if c in df_next.columns]
     df_next_v = df_next[next_cols].copy()
 
@@ -426,7 +426,7 @@ def build_page_deep_dive(d: dict) -> vm.Page:
         _num_col("avg_gap_days", "Avg Gap (days)", width=140, fmt=",.0f"),
         {"field": "expected_next_order_date", "headerName": "Expected Next", "width": 160},
     ]
-    
+
     if "next_order_status" in df_next_v.columns:
         next_column_defs.append(
             {
@@ -440,12 +440,12 @@ def build_page_deep_dive(d: dict) -> vm.Page:
                 },
             }
         )
-    
+
     next_grid_opts = _base_grid_opts(next_column_defs, page_size=25)
 
     # Cross Sell - CON EMOJIS (solución definitiva)
     df_cross = d["cross_sell"].copy()
-    
+
     def format_lift_visual(lift):
         if pd.isna(lift):
             return ""
@@ -455,17 +455,17 @@ def build_page_deep_dive(d: dict) -> vm.Page:
             return f"⚪ {lift:.2f}"
         else:
             return f"🔴 {lift:.2f}"
-    
+
     df_cross["lift"] = df_cross["lift"].apply(format_lift_visual)
-    
+
     cross_cols = [
         "productName_1", "productName_2",
-        "cooccurrence_count", "support", "confidence_from_p1", 
+        "cooccurrence_count", "support", "confidence_from_p1",
         "lift"
     ]
     cross_cols = [c for c in cross_cols if c in df_cross.columns]
     df_cross_v = df_cross[cross_cols].copy()
-    
+
     cross_column_defs = [
         {"field": "productName_1", "headerName": "Product A", "width": 220, "pinned": "left"},
         {"field": "productName_2", "headerName": "Product B", "width": 220, "pinned": "left"},

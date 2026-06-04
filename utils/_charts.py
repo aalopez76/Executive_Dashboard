@@ -14,7 +14,7 @@ Cambios:
 
 from __future__ import annotations
 
-from typing import List, Optional, Literal
+from typing import List, Literal, Optional
 
 import pandas as pd
 import plotly.graph_objects as go

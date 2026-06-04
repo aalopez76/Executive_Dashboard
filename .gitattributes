@@ -1,0 +1,9 @@
+# Normalización de finales de línea: LF en el repositorio (consistencia cross-platform y CI Linux).
+* text=auto eol=lf
+
+# Binarios: no tocar.
+*.png binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.sqlite binary
