@@ -142,3 +142,16 @@ cython_debug/
 
 # Ruff
 .ruff_cache/
+
+# Scaffolding de proceso / IA (local-only, consistente con SQL-Queries y SQL-Connection-Module)
+CLAUDE.md
+.claude/
+docs/AUDIT.md
+docs/REFACTOR_PLAN.md
+handoff.md
+handoff/
+*.pdf
+
+# Bundle de despliegue HF (repo git propio) e informes generados
+Executive-kpi-dashboard/
+docs/data_report.md
