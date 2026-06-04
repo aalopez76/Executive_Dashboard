@@ -111,11 +111,13 @@ def create_app():
 
 
 # -----------------------------------------------------------------------------
-# Entrypoint
+# Exposición a nivel de módulo para servidores WSGI (gunicorn app:app).
+# Se construye una sola vez al importar; el bloque __main__ reutiliza la instancia.
 # -----------------------------------------------------------------------------
+app = create_app()
+server = app.dash.server
+
+
 if __name__ == "__main__":
-    app = create_app()
-    debug = True
-    use_reloader = False
-    app.run(debug=debug, use_reloader=use_reloader)
+    app.run(debug=True, use_reloader=False)
 
