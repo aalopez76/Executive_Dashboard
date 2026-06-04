@@ -1,7 +1,7 @@
 # CLAUDE.md — Single source of truth
 
 > Dashboard ejecutivo de KPIs (BI). **No es un proyecto de ML.** Stack real verificado por
-> auditoría (ver `AUDIT.md`). Cualquier futura skill/hook/comando debe respetar esta realidad.
+> auditoría (ver `docs/AUDIT.md`). Cualquier futura skill/hook/comando debe respetar esta realidad.
 
 ## Proyecto
 
@@ -26,28 +26,41 @@
 
 ## Comandos
 
-> No hay `Makefile`. Estos son los comandos reales del proyecto (PowerShell/Windows).
+> Hay `Makefile` (en Windows sin `make`, usar el python del `.venv` directamente; ver README).
+> Override del intérprete: `make test PYTHON=.venv/Scripts/python.exe`.
 
-| Acción | Comando |
-|--------|---------|
-| Ejecutar app (local) | `python app.py` |
-| Lint | `ruff check .` |
-| Format | `ruff check --fix . ; black .` |
-| Tests (submódulo) | `python -m pytest SQL-Connection-Module/tests` |
-| Validar un dataset | `/data_validation <ruta-o-nombre>` |
-| Revisar el dashboard | `/dashboard_review` |
+| Acción | make | Directo |
+|--------|------|---------|
+| Ejecutar app (local) | `make run` | `python app.py` |
+| Lint | `make lint` | `ruff check .` |
+| Format (opt-in) | `make format` | `ruff check --fix . ; black .` |
+| Tests | `make test` | `python -m pytest` |
+| Servir (prod) | — | `gunicorn wsgi:server --bind 0.0.0.0:$PORT` |
+| Regenerar lockfile | — | `pip-compile --no-annotate --strip-extras requirements.in` |
+| Validar un dataset | — | `/data_validation <ruta-o-nombre>` |
+| Revisar el dashboard | — | `/dashboard_review` |
+
+> **BD en tests/deploy:** fijar `DB_PATH` a `SQL-Connection-Module/examples/toys_and_models.sqlite`;
+> `get_db_path()` por defecto apunta a una copia externa al repo (no fiable en clon limpio/CI).
 
 ## Estructura
 
 ```
 app.py                 # App factory Vizro -> create_app()
+wsgi.py                # Entrypoint WSGI (gunicorn wsgi:server)
 utils/                 # data, data_engine, query_reader, pages, _charts
-SQL-Connection-Module/ # [submódulo] conector SQL multi-motor + tests
-SQL-Queries/           # [submódulo] queries .sql (analytical/diagnostic/predictive)
-configs/thresholds.yaml# umbrales para /dashboard_review
-docs/                  # informes generados (data_report.md, ...)
+tests/                 # pytest: data_integrity, queries, dashboard_build
+configs/thresholds.yaml# umbrales para tests y /dashboard_review
+requirements.in        # deps directas (fuente del lockfile)
+requirements.txt       # LOCKFILE (pip-compile) · requirements-dev.txt (tooling)
+pyproject.toml         # config ruff / black / pytest
+Makefile               # run/lint/format/test/review/clean
+.github/workflows/     # CI (ruff + pytest)
 .claude/               # skills, commands, hooks, settings
-Executive-kpi-dashboard/ # bundle de despliegue para Hugging Face Spaces (repo git propio)
+docs/                  # AUDIT.md, REFACTOR_PLAN.md, informes generados
+SQL-Connection-Module/ # [submódulo] conector SQL multi-motor + BD de ejemplo
+SQL-Queries/           # [submódulo] queries .sql (analytical/diagnostic/predictive)
+Executive-kpi-dashboard/ # bundle de despliegue HF Spaces (repo git propio, gitignored)
 ```
 
 ## Skills (auto-invocables por contexto)
@@ -74,8 +87,15 @@ Executive-kpi-dashboard/ # bundle de despliegue para Hugging Face Spaces (repo g
   falla una herramienta.
 - *Prettier para `.md` NO configurado*: prettier no está instalado en este entorno.
 
-## Deuda técnica conocida (de AUDIT.md)
+## Estado (rama chore/reproducibility-and-tests)
 
-- 🟠 `Dockerfile` raíz arranca con `uvicorn app:app`; debería ser `gunicorn app:server` previa
-  exposición de `server = create_app().dash.server` (el bundle de HF ya lo hace bien).
-- 🟡 Sin README en la raíz.
+Resuelto en esta iteración: lockfile (`pip-tools`), suite de tests (`tests/`, 19 tests verdes),
+config de estilo (`pyproject.toml`), CI (`.github/workflows/ci.yml`), deploy WSGI
+(`wsgi.py` + `Dockerfile` con gunicorn), `README.md` y `.env.example`. Respaldo: rama
+`backup/pre-refactor-2026-06-03`.
+
+### Deuda técnica pendiente
+- 🟡 `get_db_path()` por defecto apunta fuera del repo; en local/CI se mitiga con `DB_PATH`,
+  pero convendría corregir la ruta por defecto a la copia interna del submódulo.
+- 🟢 `black --check` no es bloqueante en CI (el código heredado no está black-formateado);
+  aplicar `make format` en un commit `style:` dedicado si se desea activarlo.
