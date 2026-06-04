@@ -1,20 +1,21 @@
 # app.py
-import os
 import logging
-from dash import html, get_asset_url
-import dash_bootstrap_components as dbc
+import os
 
+import dash_bootstrap_components as dbc
 import vizro.models as vm
+from dash import get_asset_url, html
 from vizro import Vizro
 
 from utils.data import load_datasets  # espera db_path
 from utils.pages import (
-    build_page_exec,
-    build_page_risks,
-    build_page_opportunities,
     build_page_deep_dive,
+    build_page_exec,
+    build_page_opportunities,
     build_page_regional,
+    build_page_risks,
 )
+
 
 # -----------------------------------------------------------------------------
 # Logging

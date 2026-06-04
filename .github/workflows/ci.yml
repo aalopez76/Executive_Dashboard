@@ -26,10 +26,8 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Lint (ruff) — solo aportes nuevos
-        # El código heredado (app.py, utils/) tiene deuda de imports; se limpia
-        # opt-in con `make lint`/`make format`. Aquí se lintean los archivos añadidos.
-        run: ruff check tests/
+      - name: Lint (ruff)
+        run: ruff check .
 
       - name: Tests (pytest)
         run: pytest
