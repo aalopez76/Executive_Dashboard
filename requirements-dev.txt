@@ -2,7 +2,6 @@
 # Instalar tras requirements.txt:  pip install -r requirements-dev.txt
 # Usadas por el Makefile, los tests y CI.
 
-pip-tools==7.5.3   # regenerar el lockfile: pip-compile requirements.in
 pytest==9.0.3      # suite de tests (tests/)
 ruff==0.15.15      # lint + orden de imports
 black==24.10.0     # formateo (opt-in; ver pyproject.toml)

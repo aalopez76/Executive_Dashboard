@@ -9,8 +9,9 @@ def test_create_app_builds_required_pages(db_path, thresholds, monkeypatch):
     monkeypatch.setenv("DB_PATH", db_path)
     import app as app_module
 
-    vizro_app = app_module.create_app()
-    assert hasattr(vizro_app, "dash"), "create_app() no devolvió una app Vizro válida"
+    # app.py expone `app` a nivel de módulo (gunicorn app:app); se construye al importar.
+    vizro_app = app_module.app
+    assert hasattr(vizro_app, "dash"), "app.py no expuso una app Vizro válida"
 
     titles = {page.title for page in model_manager._get_models(vm.Page)}
     required = set(thresholds["dashboard"]["required_pages"])

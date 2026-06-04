@@ -1,9 +1,9 @@
 # pyproject.toml — configuración de herramientas (NO empaqueta el proyecto, que usa pip + requirements).
-# Stack BI: Vizro/Dash + pandas + SQLite. Python 3.11.
+# Stack BI: Vizro/Dash + pandas + SQLite. Python 3.12.
 
 [tool.ruff]
 line-length = 120
-target-version = "py311"
+target-version = "py312"
 extend-exclude = [
     ".venv",
     "SQL-Connection-Module",
@@ -19,7 +19,7 @@ ignore = ["E501"]
 
 [tool.black]
 line-length = 120
-target-version = ["py311"]
+target-version = ["py312"]
 extend-exclude = '''
 /(
     \.venv
