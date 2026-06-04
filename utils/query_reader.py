@@ -28,6 +28,10 @@ def load_sql_query(relative_path: str) -> str:
     fname_no_ext, _ = os.path.splitext(filename)
 
     candidates = [
+        # estructura nueva (SQL-Queries estandarizado): <folder>/sql/<file>
+        os.path.normpath(os.path.join(folder_path, "sql", filename)),
+        os.path.normpath(os.path.join(folder_path, "sql", fname_no_ext)),
+        # estructura antigua (compatibilidad): <folder>/.sql/<file>
         os.path.normpath(os.path.join(folder_path, ".sql", filename)),
         os.path.normpath(os.path.join(folder_path, ".sql", fname_no_ext)),
         os.path.normpath(os.path.join(folder_path, filename)),

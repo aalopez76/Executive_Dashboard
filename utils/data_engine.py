@@ -1,35 +1,53 @@
 # utils/data_engine.py
 import logging
-import sqlite3
 from typing import Dict
 
 import pandas as pd
+from sql_connection import get_connector
 
 from .query_reader import load_sql_query
 
 logger = logging.getLogger(__name__)
 
+# Mapeo de área lógica -> carpeta versionada en SQL-Queries (estructura numerada).
+_AREA_DIRS = {
+    "descriptive": "01.descriptive",
+    "diagnostic": "02.diagnostic",
+    "analytical": "03.analytical",
+    "predictive": "04.predictive",
+    "structural": "05.structural",
+}
+
+
+def _map_area(relative_path: str) -> str:
+    """Traduce 'predictive/01_x.sql' -> '04.predictive/01_x.sql' (carpeta numerada)."""
+    parts = relative_path.replace("\\", "/").split("/")
+    if parts:
+        parts[0] = _AREA_DIRS.get(parts[0], parts[0])
+    return "/".join(parts)
+
 
 class DataEngine:
     """
-    Motor de datos basado en SQLite:
+    Motor de datos sobre SQLite, vía SQL-Connection-Module:
     - Lee tablas raw (para df_base en Pandas).
-    - Ejecuta queries SQL versionadas (analytical/diagnostic/predictive/descriptive).
+    - Ejecuta queries SQL versionadas (descriptive/diagnostic/analytical/predictive/structural).
     """
 
     def __init__(self, db_path: str):
         self.db_path = db_path
-        self.conn = sqlite3.connect(db_path, check_same_thread=False)
+        self.connector = get_connector("sqlite", path=db_path)
+        self.connector.connect()
         logger.info("DataEngine conectado a: %s", db_path)
 
     def _execute_query(self, relative_path: str) -> pd.DataFrame:
         """
-        Carga el SQL desde disco mediante query_reader y ejecuta en SQLite.
-        Devuelve DF vacío si hay error para no romper UI.
+        Carga el SQL desde disco mediante query_reader y lo ejecuta vía el conector.
+        Devuelve DF vacío si hay error para no romper la UI.
         """
         try:
-            sql = load_sql_query(relative_path)
-            return pd.read_sql(sql, self.conn)
+            sql = load_sql_query(_map_area(relative_path))
+            return self.connector.read_sql(sql)
         except Exception as e:
             logger.error("Error ejecutando query %s: %s", relative_path, e)
             return pd.DataFrame()
@@ -39,7 +57,7 @@ class DataEngine:
         Lectura directa de tablas. Se usa para construir df_base (Pandas).
         """
         try:
-            return pd.read_sql(f"SELECT {cols} FROM {table}", self.conn)
+            return self.connector.read_sql(f"SELECT {cols} FROM {table}")
         except Exception as e:
             logger.error("Error leyendo tabla %s: %s", table, e)
             return pd.DataFrame()
@@ -68,17 +86,13 @@ class DataEngine:
         return {
             # timeseries empresa
             "monthly": self._execute_query("predictive/01_company_monthly_timeseries.sql"),
-
             # ABCs
             "customers": self._execute_query("analytical/03_customer_deep_agg_phase2.sql"),
             "products": self._execute_query("analytical/02_products_deep_agg.sql"),
-
             # geografía comparativa
             "regions": self._execute_query("analytical/01_sales_by_country_vs_region.sql"),
-
-            # performance reps (nombre correcto del archivo)
+            # performance reps
             "salesreps": self._execute_query("analytical/04_salesrep_performance_deep_agg.sql"),
-
             # opcionales
             "top_bottom": self._execute_query("analytical/06_top_bottom_product_by_productline.sql"),
         }
@@ -100,6 +114,6 @@ class DataEngine:
 
     def close(self) -> None:
         try:
-            self.conn.close()
+            self.connector.close()
         except Exception as e:
-            logger.warning("Error cerrando conexión SQLite: %s", e)
+            logger.warning("Error cerrando conexión: %s", e)
