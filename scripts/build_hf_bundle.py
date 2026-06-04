@@ -20,6 +20,7 @@ TEMPLATES = Path(__file__).resolve().parent / "hf_templates"
 
 DB_SRC = REPO / "SQL-Connection-Module" / "examples" / "toys_and_models.sqlite"
 QUERIES_SRC = REPO / "SQL-Queries" / "queries"
+CONNECTOR_SRC = REPO / "SQL-Connection-Module" / "src" / "sql_connection"
 _IGNORE = shutil.ignore_patterns("__pycache__", "*.pyc", ".ipynb_checkpoints")
 
 
@@ -34,7 +35,7 @@ _IGNORE_QUERIES = shutil.ignore_patterns("__pycache__", "*.pyc", "img", "*.png",
 
 
 def _bundle_requirements(repo_req: Path) -> str:
-    """requirements del repo SIN el editable -e ./SQL-Connection-Module (el bundle no lo usa)."""
+    """requirements del repo SIN el editable -e (el conector se vendoriza como sql_connection/)."""
     keep = [
         line
         for line in repo_req.read_text(encoding="utf-8").splitlines()
@@ -44,7 +45,7 @@ def _bundle_requirements(repo_req: Path) -> str:
 
 
 def build(output: Path) -> None:
-    for src, what in [(DB_SRC, "BD"), (QUERIES_SRC, "queries")]:
+    for src, what in [(DB_SRC, "BD"), (QUERIES_SRC, "queries"), (CONNECTOR_SRC, "conector")]:
         if not src.exists():
             raise SystemExit(f"No se encontró {what} en {src} (¿submódulos inicializados?)")
 
@@ -56,6 +57,8 @@ def build(output: Path) -> None:
     shutil.copy2(REPO / "app.py", output / "app.py")
     _copytree(REPO / "utils", output / "utils")
     _copytree(REPO / "assets", output / "assets")
+    # Conector vendorizado: el dashboard lo importa en runtime; el bundle no instala el editable.
+    _copytree(CONNECTOR_SRC, output / "sql_connection")
 
     # 2) Queries materializadas desde el submódulo SQL-Queries (solo .sql).
     _copytree(QUERIES_SRC, output / "queries", ignore=_IGNORE_QUERIES)

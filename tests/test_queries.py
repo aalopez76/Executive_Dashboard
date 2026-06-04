@@ -2,6 +2,7 @@
 
 import pytest
 
+from utils.data_engine import _map_area
 from utils.query_reader import load_sql_query
 
 # Rutas relativas usadas en utils/data_engine.py (get_core_datasets/diagnostics/predictive).
@@ -24,5 +25,5 @@ QUERY_PATHS = [
 
 @pytest.mark.parametrize("rel_path", QUERY_PATHS)
 def test_query_resolves_and_non_empty(rel_path):
-    sql = load_sql_query(rel_path)
+    sql = load_sql_query(_map_area(rel_path))
     assert sql.strip(), f"SQL vacío o no resuelto: {rel_path}"
