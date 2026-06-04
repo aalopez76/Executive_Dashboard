@@ -104,6 +104,9 @@ def create_app():
         )
     )
 
+    # Healthcheck para orquestadores / balanceadores (gunicorn, contenedor, HF Spaces).
+    vizro_app.dash.server.add_url_rule("/health", "health", lambda: ("ok", 200))
+
     if not is_reloader_process():
         log.info("Dashboard built successfully")
 
