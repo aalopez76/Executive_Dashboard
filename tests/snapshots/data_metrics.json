@@ -1,0 +1,12 @@
+{
+  "amount_at_risk": 3051500.0,
+  "cross_sell_pairs": 1367,
+  "customers_active": 98,
+  "high_risk_count": 58,
+  "invalid_date_pct": 2.91,
+  "monthly_rows": 26,
+  "orders": 283,
+  "rfm_customers": 122,
+  "top10_product_conc": 18.11,
+  "top20_customer_conc": 39.03
+}
