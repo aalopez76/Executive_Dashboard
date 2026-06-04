@@ -36,24 +36,24 @@ def get_db_path() -> str:
     Resuelve el path de la DB.
     Prioridad:
       1) env var DB_PATH
-      2) path relativo al repo (tu estructura actual)
+      2) copia interna del submódulo (SQL-Connection-Module/examples/, versionada en el repo)
+      3) copia externa (un nivel por encima del repo) — legado, por compatibilidad
     """
     env_path = os.getenv("DB_PATH")
     if env_path:
         return env_path
 
-    # Ajustado a tu estructura:
-    # KPI-Dashboard/app.py
-    # ../SQL-Connection-Module/examples/toys_and_models.sqlite
-    return os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "SQL-Connection-Module",
-            "examples",
-            "toys_and_models.sqlite",
-        )
-    )
+    here = os.path.dirname(__file__)
+    rel = ("SQL-Connection-Module", "examples", "toys_and_models.sqlite")
+    candidates = [
+        os.path.abspath(os.path.join(here, *rel)),        # interna (preferida)
+        os.path.abspath(os.path.join(here, "..", *rel)),  # externa (legado)
+    ]
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return candidate
+    # Ninguna existe: devuelve la interna para que el error apunte a la ruta esperada.
+    return candidates[0]
 
 
 # -----------------------------------------------------------------------------

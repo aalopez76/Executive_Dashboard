@@ -95,7 +95,8 @@ config de estilo (`pyproject.toml`), CI (`.github/workflows/ci.yml`), deploy WSG
 `backup/pre-refactor-2026-06-03`.
 
 ### Deuda técnica pendiente
-- 🟡 `get_db_path()` por defecto apunta fuera del repo; en local/CI se mitiga con `DB_PATH`,
-  pero convendría corregir la ruta por defecto a la copia interna del submódulo.
 - 🟢 `black --check` no es bloqueante en CI (el código heredado no está black-formateado);
   aplicar `make format` en un commit `style:` dedicado si se desea activarlo.
+
+> `get_db_path()` corregido: por defecto usa la copia **interna** del submódulo, con fallback
+> a la externa por compatibilidad. `DB_PATH` sigue funcionando como override.
