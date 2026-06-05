@@ -138,6 +138,27 @@ def calculate_product_concentration(df_products: pd.DataFrame, top_n: int = 10) 
     return round((top_rev / tot) * 100, 2) if tot else 0.0
 
 
+def _on_time_rate(df_base: pd.DataFrame, year: int) -> float:
+    """% de órdenes (order-level) enviadas en o antes de la fecha requerida, en un año dado.
+
+    Se calcula desde df_base porque la columna monthly.onTimeRate_pct de la query no está en
+    escala 0-100 (devuelve valores >100), lo que producía KPIs absurdos.
+    """
+    if df_base is None or df_base.empty:
+        return 0.0
+    needed = {"orderNumber", "orderDate", "shippedDate", "requiredDate"}
+    if not needed.issubset(df_base.columns):
+        return 0.0
+    d = df_base.drop_duplicates("orderNumber").copy()
+    for c in ("orderDate", "shippedDate", "requiredDate"):
+        d[c] = pd.to_datetime(d[c], errors="coerce")
+    d = d[d["orderDate"].dt.year == year]
+    shipped = d[d["shippedDate"].notna() & d["requiredDate"].notna()]
+    if shipped.empty:
+        return 0.0
+    return round((shipped["shippedDate"] <= shipped["requiredDate"]).mean() * 100, 1)
+
+
 def create_kpi_card_data(
     df_monthly: pd.DataFrame,
     df_base: pd.DataFrame,
@@ -170,8 +191,8 @@ def create_kpi_card_data(
         f"AOV_{current_year}": _safe_mean(dfc, "avgOrderValue"),
         f"AOV_{previous_year}": _safe_mean(dfp, "avgOrderValue"),
 
-        f"OnTimeRate_{current_year}": _safe_mean(dfc, "onTimeRate_pct"),
-        f"OnTimeRate_{previous_year}": _safe_mean(dfp, "onTimeRate_pct"),
+        f"OnTimeRate_{current_year}": _on_time_rate(df_base, current_year),
+        f"OnTimeRate_{previous_year}": _on_time_rate(df_base, previous_year),
 
         f"PaymentCoverage_{current_year}": calculate_payment_coverage(df_base, df_payments),
         f"PaymentCoverage_{previous_year}": calculate_payment_coverage(df_base, df_payments),
@@ -194,7 +215,9 @@ def get_context_banner_data(df_base: pd.DataFrame, df_offices: pd.DataFrame, df_
     }
 
 
-def calculate_diagnostic_summary(df_high_risk: pd.DataFrame, df_misalignment: pd.DataFrame) -> dict:
+def calculate_diagnostic_summary(
+    df_high_risk: pd.DataFrame, df_misalignment: pd.DataFrame, total_customers: int = 0
+) -> dict:
     hr_count = int(len(df_high_risk)) if df_high_risk is not None else 0
     amt = float(df_high_risk["amount_at_risk"].sum()) if df_high_risk is not None and not df_high_risk.empty and "amount_at_risk" in df_high_risk.columns else 0.0
 
@@ -202,8 +225,8 @@ def calculate_diagnostic_summary(df_high_risk: pd.DataFrame, df_misalignment: pd
     over = int(df_misalignment["misalignmentCategory"].str.contains("HIGH CREDIT", na=False).sum()) if df_misalignment is not None and not df_misalignment.empty and "misalignmentCategory" in df_misalignment.columns else 0
     under = int(df_misalignment["misalignmentCategory"].str.contains("LOW CREDIT", na=False).sum()) if df_misalignment is not None and not df_misalignment.empty and "misalignmentCategory" in df_misalignment.columns else 0
 
-    base_den = int(df_misalignment["customerNumber"].nunique()) if df_misalignment is not None and not df_misalignment.empty and "customerNumber" in df_misalignment.columns else 0
-    hr_pct = round((hr_count / base_den) * 100, 1) if base_den else 0.0
+    # % de high-risk sobre el universo de clientes (no sobre misalignment, que son solo 3).
+    hr_pct = round((hr_count / total_customers) * 100, 1) if total_customers else 0.0
 
     return {
         "high_risk_customers_count": hr_count,
@@ -273,7 +296,9 @@ def load_datasets(db_path: str) -> dict:
         )
 
         context = get_context_banner_data(df_base, raw.get("offices", pd.DataFrame()), raw.get("employees", pd.DataFrame()))
-        diagnostic_summary = calculate_diagnostic_summary(df_high_risk, df_misalignment)
+        diagnostic_summary = calculate_diagnostic_summary(
+            df_high_risk, df_misalignment, total_customers=len(df_customers)
+        )
 
         # 4) Data quality: invalid dates (misma lógica que tenías)
         tmp = df_base.copy()

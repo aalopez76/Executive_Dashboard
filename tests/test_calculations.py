@@ -78,13 +78,13 @@ def test_diagnostic_summary():
             "misalignmentCategory": ["HIGH CREDIT risk", "LOW CREDIT gap", "OK"],
         }
     )
-    out = calculate_diagnostic_summary(high_risk, mis)
+    out = calculate_diagnostic_summary(high_risk, mis, total_customers=8)
     assert out["high_risk_customers_count"] == 2
     assert out["amount_at_risk"] == 150.0
     assert out["misalignment_count"] == 3
     assert out["over_credited_count"] == 1
     assert out["under_credited_count"] == 1
-    assert out["high_risk_customers_pct"] == round(2 / 3 * 100, 1)
+    assert out["high_risk_customers_pct"] == 25.0  # 2 high-risk / 8 customers
 
 
 def test_diagnostic_summary_vacio():
