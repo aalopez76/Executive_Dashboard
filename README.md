@@ -108,4 +108,4 @@ This project uses 2 external repositories:
 
 ---
 
-> Figures verified against the database on 2026-06-04. QA assisted by AI tooling.
+> Figures verified against the database. QA assisted by AI tooling.
